@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    url: jdbc:tc:mysql:8.4:///order_platform?TC_DAEMON=true
+    username: test
+    password: test
+  flyway:
+    enabled: true
+
+logging:
+  level:
+    root: WARN
+    com.company.orderplatform: DEBUG
