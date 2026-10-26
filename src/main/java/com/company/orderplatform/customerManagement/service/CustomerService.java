@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 
@@ -21,4 +23,7 @@ public interface CustomerService {
     public Customer getCustomerById(Long customerId);
     public Page<Customer> getAllCustomerPaginated(Pageable pageable);
     public Customer updateCustomer(Long customerId ,  CustomerRequestDto customerRequestDto);
+    public String handleFileUpload(MultipartFile file) throws IOException;
+    public String handleFileUploadDelete(MultipartFile file) throws IOException;
+
 }

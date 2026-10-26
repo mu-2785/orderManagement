@@ -9,6 +9,9 @@ spring:
       ddl-auto: validate
   flyway:
     enabled: true
+  batch:
+    job:
+      enabled: true
 
 server:
   port: 8080
