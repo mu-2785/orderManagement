@@ -1,11 +1,9 @@
 package com.company.orderplatform.customerManagement.entity;
 
 
+import com.company.orderplatform.common.entity.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
@@ -15,7 +13,8 @@ import lombok.Setter;
 @Table(
         name = "customers"
 )
-public class Customer {
+@Builder
+public class Customer extends BaseEntity {
 
     /*
     name VARCHAR(150) NOT NULL,
@@ -29,7 +28,15 @@ public class Customer {
     private String email;
     @Column(name = "status" ,nullable = false)
     @Enumerated(value = EnumType.STRING)
-    private CustomerStatus status;
+    private CustomerStatus status = CustomerStatus.ACTIVE ;
 
 
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", status=" + status +
+                '}';
+    }
 }
