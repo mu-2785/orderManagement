@@ -5,6 +5,7 @@ import com.company.orderplatform.customerManagement.dto.CustomerResponseDto;
 import com.company.orderplatform.customerManagement.entity.Customer;
 import com.company.orderplatform.customerManagement.mapper.CustomerMapper;
 import com.company.orderplatform.customerManagement.service.CustomerService;
+
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -16,6 +17,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @RestController
 @RequestMapping("/api/v1/customers")
@@ -47,6 +55,39 @@ PUT	    /api/v1/customers/{id}	Update a customer's details
 
         return ResponseEntity.status(201).body(response);
 
+    }
+
+    @PostMapping("/upload")
+    public ResponseEntity<String> storeUploadedFile(@RequestBody MultipartFile file) throws IOException {
+        String uploadDir = "uploads/";
+        File dir = new  File(uploadDir);
+        if(!dir.exists()){
+            dir.mkdirs();
+        }
+
+        Path  filePath = Paths.get(uploadDir + file.getOriginalFilename());
+
+
+
+        Files.write(filePath , file.getBytes());
+
+
+        return ResponseEntity.ok("file successfully uploaded and stored "+ file.getOriginalFilename());
+
+    }
+
+
+    @PostMapping(value = "/upload2" , consumes = {"multipart/form-data"})
+    public ResponseEntity<String> createCustomerFromCsv(@RequestPart("file")MultipartFile file) throws IOException {
+
+        customerService.handleFileUpload(file);
+        return null;
+    }
+    @PostMapping(value = "/upload3" , consumes = {"multipart/form-data"})
+    public ResponseEntity<String> deleteCustomerFile2(@RequestPart("file")MultipartFile file) throws IOException {
+
+        customerService.handleFileUploadDelete(file);
+        return null;
     }
 
     @GetMapping("/{id}")
