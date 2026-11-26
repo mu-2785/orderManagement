@@ -1,6 +1,7 @@
 package com.company.orderplatform.api;
 
 import com.company.orderplatform.common.exceptions.IlleagelAction;
+import com.company.orderplatform.common.exceptions.InvalidArgumentException;
 import com.company.orderplatform.common.exceptions.NotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -69,6 +70,24 @@ public class GlobalExceptionHandler {
                 request.getRequestURI(),
                 List.of()
         );
+
+        return ResponseEntity.status(status).body(errorResponse);
+
+    }
+
+    @ExceptionHandler(InvalidArgumentException.class)
+    public ResponseEntity<ApiError> handleInvalidArgumentException(InvalidArgumentException ex,
+                                                     HttpServletRequest request) {
+
+
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        ApiError errorResponse = new ApiError(
+                Instant.now(),
+                status.value(),
+                status.getReasonPhrase(),
+                "Request validation failed",
+                request.getRequestURI(),
+                List.of());
 
         return ResponseEntity.status(status).body(errorResponse);
 
