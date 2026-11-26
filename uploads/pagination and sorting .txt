@@ -1,0 +1,41 @@
+pagination and sorting in spring boot
+
+
+
+pagination 
+
+	page number		//	offset to skip 
+	page size		//	limit
+
+
+
+
+@GetMapping
+    public void getAllCustomerPaginated(@RequestParam(required = false , defaultValue = "0") int pageNo ,			//	0 based indexing
+                                        @RequestParam(required = false , defaultValue = "10") int pageSize,
+                                        @RequestParam(required = false , defaultValue = "name") String sortBy,
+                                        @RequestParam(required = false , defaultValue = "ASC") String sortDirection
+    ){
+
+        Sort sort = null;
+        if(sortDirection.equalsIgnoreCase("ASC")){
+            sort = Sort.by(sortBy).ascending();
+        }
+        else{
+            sort = Sort.by(sortBy).descending();
+        }
+        Pageable pageable = PageRequest.of(pageNo, pageSize , sort);
+        customerService.getAllCustomerPaginated(pageable );
+
+    }
+
+
+
+
+
+ @Override
+    public List<Customer> getAllCustomerPaginated(Pageable pageable ) {
+
+        return customerRepository.findAll(pageable).getContent();
+        
+    }
